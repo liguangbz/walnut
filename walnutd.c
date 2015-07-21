@@ -1,7 +1,7 @@
 /*
  * walnutd.c
  *
- * The Cells controlling daemon, walnutd
+ * The walnuts controlling daemon, walnutd
  *
  * Copyright (C) 2010-2013 Columbia University
  * Authors: Christoffer Dall <cdall@cs.columbia.edu>
@@ -696,7 +696,7 @@ static void *__monitor_start_state(void *arg)
 	unlink(pipe_name);
 */
 	finish_walnut_startup(cms->name);
-	ALOGI("Cell '%s' started!", cms->name);
+	ALOGI("walnut '%s' started!", cms->name);
 
 	free(cms);
 	free(pipe_name);
@@ -1048,7 +1048,7 @@ static void switch_response(int fd, int ret, char *name)
 		send_msg(fd, "1 Switch failed. Couldn't open proc file");
 		break;
 	case -2:
-		send_msg(fd, "1 Cell is already active");
+		send_msg(fd, "1 walnut is already active");
 		break;
 	case -3:
 		send_msg(fd, "1 Switch failed. Couldn't write to proc file");
@@ -1304,13 +1304,13 @@ static void do_start(int fd, struct walnut_cmd_arg *cmd_args)
 	pthread_mutex_lock(&config_lock);
 	if (!walnut_exists(name)) {
 		unlock_send_msg(&config_lock, fd,
-				"1 Start failed. Cell does not exist.");
+				"1 Start failed. walnut does not exist.");
 		return;
 	}
 	/* Make sure walnut is not already running */
 	if (search_walnuts(name) != NULL) {
 		unlock_send_msg(&config_lock, fd,
-				"1 Start failed. Cell is already running.");
+				"1 Start failed. walnut is already running.");
 		return;
 	}
 
@@ -1353,7 +1353,7 @@ static void do_stop(int fd, struct walnut_cmd_arg *cmd_args)
 	struct walnut_node *walnut = search_walnuts(name);
 	if (walnut == NULL) {
 		unlock_send_msg(&g_walnut_list.mutex, fd,
-				"1 Cell, %s, is not running", name);
+				"1 walnut, %s, is not running", name);
 		return;
 	}
 
@@ -1410,14 +1410,14 @@ static void do_destroy(int fd, struct walnut_cmd_arg *cmd_args)
 	/* Make sure walnut exists */
 	if (!walnut_exists(name)) {
 		unlock_send_msg(&config_lock, fd,
-				"1 Destroy failed. Cell does not exist.");
+				"1 Destroy failed. walnut does not exist.");
 		return;
 	}
 
 	/* Make sure walnut is not currently running */
 	if (search_walnuts(name) != NULL) {
 		unlock_send_msg(&config_lock, fd,
-				"1 Destroy failed. Cell is currently running.");
+				"1 Destroy failed. walnut is currently running.");
 		return;
 	}
 
@@ -1489,7 +1489,7 @@ static void do_console(int fd, struct walnut_cmd_arg *args)
 	pthread_mutex_lock(&g_walnut_list.mutex);
 	struct walnut_node *walnut = search_walnuts(name);
 	if (walnut == NULL) {
-		send_msg(fd, "1 Cell is not running");
+		send_msg(fd, "1 walnut is not running");
 		goto err_do_console;
 	} else if (walnut->console_pty.ptm == -1) {
 		send_msg(fd, "1 Console unavailable for given walnut");
@@ -1590,7 +1590,7 @@ static void do_unmount(int fd, struct walnut_cmd_arg *cmd_args)
 	pthread_mutex_lock(&config_lock);
 	if (search_walnuts(name) != NULL) {
 		unlock_send_msg(&config_lock, fd,
-				"1 Unmount failed. Cell is currently running.");
+				"1 Unmount failed. walnut is currently running.");
 		return;
 	}
 
@@ -1636,7 +1636,7 @@ static void do_runcmd(int fd, struct walnut_cmd_arg *cmd_args)
 	pthread_mutex_lock(&g_walnut_list.mutex);
 	walnut = search_walnuts(name);
 	if (walnut == NULL) {
-		send_msg(fd, "1 Cell is not running");
+		send_msg(fd, "1 walnut is not running");
 		goto err;
 	} else if (walnut->console_pty.ptm == -1) {
 		send_msg(fd, "1 Console unavailable for given walnut");
@@ -1680,7 +1680,7 @@ static void do_autostart(int fd, struct walnut_cmd_arg *cmd_args)
 	pthread_mutex_lock(&config_lock);
 	if (!walnut_exists(name)) {
 		unlock_send_msg(&config_lock, fd,
-				"1 Cell, %s, does not exist", name);
+				"1 walnut, %s, does not exist", name);
 		return;
 	}
 
@@ -1695,7 +1695,7 @@ static void do_autostart(int fd, struct walnut_cmd_arg *cmd_args)
 	else if (args->off) /* off */
 		config.autostart = 0;
 	else {
-		unlock_send_msg(&config_lock, fd, "0 Cell autostart is %s",
+		unlock_send_msg(&config_lock, fd, "0 walnut autostart is %s",
 				config.autostart ? "on" : "off");
 		return;
 	}
@@ -1707,7 +1707,7 @@ static void do_autostart(int fd, struct walnut_cmd_arg *cmd_args)
 				"1 Could not write configuration file");
 		return;
 	}
-	unlock_send_msg(&config_lock, fd, "0 Cell autostart %s",
+	unlock_send_msg(&config_lock, fd, "0 walnut autostart %s",
 			config.autostart ? "enabled" : "disabled");
 }
 
@@ -1725,7 +1725,7 @@ static void do_autoswitch(int fd, struct walnut_cmd_arg *cmd_args)
 	pthread_mutex_lock(&config_lock);
 	if (!walnut_exists(name)) {
 		unlock_send_msg(&config_lock, fd,
-				"1 Cell '%s' does not exist", name);
+				"1 walnut '%s' does not exist", name);
 		return;
 	}
 
@@ -1740,7 +1740,7 @@ static void do_autoswitch(int fd, struct walnut_cmd_arg *cmd_args)
 	else if (args->off) /* off */
 		config.autoswitch = 0;
 	else {
-		unlock_send_msg(&config_lock, fd, "0 Cell autoswitch is %s",
+		unlock_send_msg(&config_lock, fd, "0 walnut autoswitch is %s",
 				config.autoswitch ? "on" : "off");
 		return;
 	}
@@ -1752,7 +1752,7 @@ static void do_autoswitch(int fd, struct walnut_cmd_arg *cmd_args)
 				"1 Could not write configuration file");
 		return;
 	}
-	unlock_send_msg(&config_lock, fd, "0 Cell autoswitch %s",
+	unlock_send_msg(&config_lock, fd, "0 walnut autoswitch %s",
 			config.autoswitch ? "enabled" : "disabled");
 }
 
@@ -1773,7 +1773,7 @@ static void do_setid(int fd, struct walnut_cmd_arg *cmd_args)
 	pthread_mutex_lock(&config_lock);
 	if (!walnut_exists(name)) {
 		unlock_send_msg(&config_lock, fd,
-				"1 Setting ID failed. Cell does not exist.");
+				"1 Setting ID failed. walnut does not exist.");
 		return;
 	}
 
@@ -1822,7 +1822,7 @@ static void do_getid(int fd, struct walnut_cmd_arg *cmd_args)
 	pthread_mutex_unlock(&config_lock);
 	if (!walnut_exists(name)) {
 		unlock_send_msg(&config_lock, fd,
-				"1 Getting ID failed. Cell does not exist.");
+				"1 Getting ID failed. walnut does not exist.");
 		return;
 	}
 	if (read_config(name, &config) == -1) {
@@ -2266,7 +2266,7 @@ static void *walnut_exit_handler(void *unused)
 		}
 
                 ALOGE("enter god 3!");
-		ALOGE("Cell %s terminated by sig %d (%s)", walnut->name, status,
+		ALOGE("walnut %s terminated by sig %d (%s)", walnut->name, status,
 		     (exit_status ? "ERROR" : "SUCCESS"));
 
 		root_path = get_root_path(walnut->name);
@@ -2428,7 +2428,7 @@ static void print_usage(const char *name)
 {
 	static const char *usage = "\
     -a             Automatically start walnuts with autostart enabled\n\
-    -c <dir>       Set Cells directory to <dir> \n\
+    -c <dir>       Set walnuts directory to <dir> \n\
                            (default: "DEFL_WALNUT_DIR")\n\
     -s <dir>       Set walnut SDCARD directory to <dir> \n\
                            (default: "DEFL_SDCARD_ROOT")\n\
@@ -2468,7 +2468,7 @@ int main(int argc, char **argv)
 			break;
 		case 'c':
 			g_walnut_dir = optarg;
-			ALOGI("Set root Cell dir to %s", g_walnut_dir);
+			ALOGI("Set root walnut dir to %s", g_walnut_dir);
 			break;
 		case 's':
 			g_sdcard_root = optarg;
@@ -2541,7 +2541,7 @@ int main(int argc, char **argv)
 		autostart_walnuts();
 
 	/*
-	 * open the main CellD socket and listen for incoming connections
+	 * open the main walnutD socket and listen for incoming connections
 	 */
 	walnutd_main();
 

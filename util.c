@@ -36,7 +36,7 @@
 #include <sys/stat.h>
 #include <sys/syscall.h>
 
-#define LOG_TAG "Cells/util"
+#define LOG_TAG "walnuts/util"
 #include <cutils/log.h>
 
 #include "walnutd.h"

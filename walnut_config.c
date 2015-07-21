@@ -1,7 +1,7 @@
 /*
  * walnut_config.c
  *
- * Cells configuration file manipulation
+ * walnuts configuration file manipulation
  *
  * Copyright (C) 2010-2013 Columbia University
  * Authors: Christoffer Dall <cdall@cs.columbia.edu>
@@ -30,7 +30,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#define LOG_TAG "Cells/config"
+#define LOG_TAG "walnuts/config"
 #include <cutils/log.h>
 
 #include "walnutd.h"

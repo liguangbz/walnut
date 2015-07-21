@@ -1,7 +1,7 @@
 /*
  * walnut_config.h
  *
- * Cell configuration definitions and routines
+ * walnut configuration definitions and routines
  *
  * Copyright (C) 2010-2013 Columbia University
  * Authors: Christoffer Dall <cdall@cs.columbia.edu>

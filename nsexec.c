@@ -41,7 +41,7 @@
 
 #include <linux/sched.h>
 
-#define LOG_TAG "Cells/nsexec"
+#define LOG_TAG "walnuts/nsexec"
 #include <cutils/log.h>
 #include <cutils/memory.h>
 #include <cutils/misc.h>
@@ -225,7 +225,7 @@ static int do_child(void *vargv)
 	sigemptyset(&sigset);
 	sigprocmask(SIG_SETMASK, &sigset, NULL);
 
-	/* Make sure init doesn't kill CellD on bad walnut errors */
+	/* Make sure init doesn't kill walnutD on bad walnut errors */
 	ret = setpgid(0, 0);
 	if (ret < 0)
 		ALOGE("error setting pgid: %s", strerror(errno));
@@ -297,12 +297,12 @@ static int do_child(void *vargv)
 	write(walnut_args->child_pipe[1], buf, 1);
 	close(walnut_args->child_pipe[1]);
 
-	ALOGD("%s: waiting for CellD...", walnutname);
+	ALOGD("%s: waiting for walnutD...", walnutname);
 	close(walnut_args->init_pipe[1]);
 	ret = read(walnut_args->init_pipe[0], buf, sizeof(buf));
 	close(walnut_args->init_pipe[0]);
 	if (ret == -1 || atoi(buf) < 1) {
-		syserr = "CellD communication";
+		syserr = "walnutD communication";
 		goto out_err;
 	}
 	ALOGD("%s: Starting init!", walnutname);
@@ -486,7 +486,7 @@ int walnut_nsexec(int sd, struct walnut_args *walnut_args,
 		goto err_cleanup;
 	}
 
-	/* pipes to synchronize child start and CellD monitoring */
+	/* pipes to synchronize child start and walnutD monitoring */
 	if (pipe(walnut_args->child_pipe) || pipe(walnut_args->init_pipe)) {
 		ALOGE("Can't create child/init pipes for '%s': %s",
 		      name, strerror(errno));

@@ -36,7 +36,7 @@
 #include <sys/stat.h>
 #include <sys/mount.h>
 
-#define LOG_TAG "Cells/console"
+#define LOG_TAG "walnuts/console"
 #include <cutils/log.h>
 
 #include "walnut_console.h"
@@ -59,6 +59,7 @@ static void walnut_console_rw_loop(int ptm, const char *cmd, const char *args)
 			write(ptm, " ", 1);
 			write(ptm, args, strlen(args));
 		}
+                ALOGE("%s, %d", args, ptm);
 		write(ptm, "\r\n", 2);
 	}
 

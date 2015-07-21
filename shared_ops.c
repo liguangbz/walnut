@@ -1,7 +1,7 @@
 /*
  * shared_ops.c
  *
- * shared client/server messaging code for Cells
+ * shared client/server messaging code for walnuts
  *
  * Copyright (C) 2010-2013 Columbia University
  * Authors: Christoffer Dall <cdall@cs.columbia.edu>
@@ -33,7 +33,7 @@
 
 #include <linux/socket.h>
 
-#define LOG_TAG "Cells"
+#define LOG_TAG "walnuts"
 #include <cutils/log.h>
 
 #include "walnutd.h"

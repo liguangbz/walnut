@@ -1,7 +1,7 @@
 /*
  * walnutd.h
  *
- * Structures and definitions for the Cells controlling daemon, walnutd
+ * Structures and definitions for the walnuts controlling daemon, walnutd
  *
  * Copyright (C) 2010-2013 Columbia University
  * Authors: Christoffer Dall <cdall@cs.columbia.edu>
@@ -40,7 +40,7 @@
 
 #include "walnut_console.h"
 
-#define SOCKET_PATH "walnutd"
+#define SOCKET_PATH "/data/walnutd"
 #define PRIV_SOCKET_PATH "TODO"
 #define WALNUTD_LOCKFILE "/data/.walnutdlock"
 #define WALNUT_ETC_PATH "/system/etc/walnut"

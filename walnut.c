@@ -1,7 +1,7 @@
 /*
  * walnut.c
  *
- * The Cells daemon client
+ * The walnuts daemon client
  *
  * Copyright (C) 2010-2013 Columbia University
  * Authors: Christoffer Dall <cdall@cs.columbia.edu>
@@ -186,7 +186,7 @@ static int do_console(int sd, int rcv_cmd)
 		 * (it was truncated to CONSOLE_READY_MSG_LEN)
 		 */
 		if (recv_msg(sd, &code2, &rmsg2) == -1)
-			fprintf(stderr, "Error communicating with CellD\n");
+			fprintf(stderr, "Error communicating with walnutD\n");
 		else
 			fprintf(stderr, "%s%s %s\n", rmsg, code2, rmsg2);
 		free(code2);
@@ -204,7 +204,7 @@ static int do_console(int sd, int rcv_cmd)
 		char *L, *cmdlen_str = NULL;
 		int cmdlen = 0;
 		if (recv_msg_len(sd, &L, &cmdlen_str, 6) < 0) {
-			fprintf(stderr, "Error communicating with CellD\n");
+			fprintf(stderr, "Error communicating with walnutD\n");
 			goto out;
 		}
 		if (*L != 'L') {
